@@ -1,0 +1,40 @@
+https://stackoverflow.com/questions/58908625/issue-looping-on-block-containing-a-set-of-tasks-in-ansible
+
+
+
+If you need to loop over a set of tasks, put them in a separate file and use include_tasks
+
+Here is the included file create_db_each.yml
+
+---
+- name: Check if file exists
+  stat:
+    path: "{{ basepath }}/{{ db_filename }}"
+  register: currdb
+
+- name: Create the file with "done" line if not present
+  copy:
+    content: "done"
+    dest: "{{ basepath }}/{{ db_filename }}"
+  when: not currdb.stat.exists | bool
+
+used in the following create_db.yml playbook
+
+---
+- name: "Create my dbs"
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Make sure the base directory exists
+      file:
+        path: "{{ basepath }}"
+        state: directory
+
+    - name: load each db
+      include_tasks: "create_db_each.yml"
+      when: layer == 'APP'
+      loop: "{{ filenames.split(',') | unique | map('trim') }}"
+      loop_control:
+        loop_var: db_filename
+

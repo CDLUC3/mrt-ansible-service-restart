@@ -1,0 +1,7 @@
+# source this file into your shell session
+
+# example usage:
+#   ansible --list-hosts $uc3-mrt-store-stg
+#   ansible --list-hosts $uc3-mrt-inventory-prd
+
+

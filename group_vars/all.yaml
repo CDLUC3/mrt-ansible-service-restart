@@ -1,0 +1,17 @@
+---
+
+availability_zones:
+- us-west-2a
+- us-west-2b
+- us-west-2c
+
+mrt_services:
+- mrt-access
+- mrt-audit
+- mrt-inventory
+- mrt-replic
+- mrt-store
+- puma
+
+
+
