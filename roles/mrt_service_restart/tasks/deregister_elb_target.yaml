@@ -1,0 +1,59 @@
+---
+
+# this comes straight our of ansible docs for module elb_target_info:
+# https://docs.ansible.com/ansible/latest/modules/elb_target_info_module.html#examples
+
+- name: Get initial list of target groups
+  delegate_to: localhost
+  community.aws.elb_target_info:
+    instance_id: "{{ ansible_ec2_instance_id }}"
+    region: "{{ ansible_ec2_placement_region }}"
+    aws_config:
+      retries:
+        total_max_attempts: 10
+        mode: adaptive
+  register: target_info
+
+- name: save fact for later
+  ansible.builtin.set_fact:
+    original_tgs: "{{ target_info.instance_target_groups }}"
+
+- name: show target groups - dereg
+  debug:
+    msg: "Associated target groups: {{ original_tgs }}"
+
+- when: exec and original_tgs is defined and original_tgs | length > 0
+  block:
+    - name: Deregister instance from all target groups
+      delegate_to: localhost
+      community.aws.elb_target:
+          target_group_arn: "{{ item.0.target_group_arn }}"
+          target_port: "{{ item.1.target_port }}"
+          target_az: "{{ item.1.target_az }}"
+          target_id: "{{ item.1.target_id }}"
+          state: absent
+          target_status: "draining"
+          region: "{{ ansible_ec2_placement_region }}"
+      with_subelements:
+        - "{{ original_tgs }}"
+        - "targets"
+
+      # This avoids having to wait for 'elb_target' to serially deregister each
+      # target group.  An alternative would be to run all of the 'elb_target'
+      # tasks async and wait for them to finish.
+
+    - name: wait for all targets to deregister
+      delegate_to: localhost
+      community.aws.elb_target_info:
+        get_unused_target_groups: false
+        instance_id: "{{ ansible_ec2_instance_id }}"
+        region: "{{ ansible_ec2_placement_region }}"
+        aws_config:
+          retries:
+            total_max_attempts: 10
+            mode: adaptive
+      register: target_info
+      until: ( target_info.instance_target_groups is defined and target_info.instance_target_groups | length) == 0
+      retries: 60
+      delay: 10
+

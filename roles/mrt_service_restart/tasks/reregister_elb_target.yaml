@@ -1,0 +1,42 @@
+---
+
+- when: exec and original_tgs|length > 0
+  block:
+
+  - name: reregister in elbv2s
+    delegate_to: localhost
+    community.aws.elb_target:
+      region: "{{ ansible_ec2_placement_region }}"
+      target_group_arn: "{{ item.0.target_group_arn }}"
+      target_port: "{{ item.1.target_port }}"
+      target_az: "{{ item.1.target_az }}"
+      target_id: "{{ item.1.target_id }}"
+      state: present
+      target_status: "initial"
+    with_subelements:
+      - "{{ original_tgs }}"
+      - "targets"
+
+  # wait until all groups associated with instance are 'healthy' or 'unused'
+  - name: wait for registration
+    delegate_to: localhost
+    community.aws.elb_target_info:
+      get_unused_target_groups: false
+      instance_id: "{{ ansible_ec2_instance_id }}"
+      region: "{{ ansible_ec2_placement_region }}"
+      aws_config:
+        retries:
+          total_max_attempts: 10
+          mode: adaptive
+    register: target_info
+    until: (target_info.instance_target_groups is defined and target_info.instance_target_groups |
+            map(attribute='targets') |
+            flatten |
+            map(attribute='target_health') |
+            rejectattr('state', 'equalto', 'healthy') |
+            rejectattr('state', 'equalto', 'unused') |
+            list |
+            length) == 0
+    retries: 60
+    delay: 10
+

@@ -1,13 +1,18 @@
 ---
+exec: false
+do_not_restart: false
+do_not_deregister: false
+service_name: ''
 
+cdlsysctl: /usr/local/bin/cdlsysctl
 availability_zones:
 - us-west-2a
 - us-west-2b
 - us-west-2c
-
 mrt_services:
 - mrt-access
 - mrt-audit
+- mrt-ingest
 - mrt-inventory
 - mrt-replic
 - mrt-store

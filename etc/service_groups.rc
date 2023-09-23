@@ -1,7 +1,30 @@
 # source this file into your shell session
 
 # example usage:
+#
 #   ansible --list-hosts $uc3-mrt-store-stg
 #   ansible --list-hosts $uc3-mrt-inventory-prd
+#
+#   ansible-playbook mrt_service_restart.yaml -l $uc3-mrt-access-prd -e service=mrt-access
+#   ansible-playbook mrt_service_restart.yaml -l $uc3-mrt-ui-prd -e service=puma
 
 
+uc3_mrt_access_stg=srvc_mrt:\&subsrvc_access:\&env_stg
+uc3_mrt_audit_stg=srvc_mrt:\&subsrvc_audit:\&env_stg
+uc3_mrt_ingest_stg=srvc_mrt:\&subsrvc_ingest:\&env_stg
+uc3_mrt_inventory_stg=srvc_mrt:\&subsrvc_inventory:\&env_stg
+uc3_mrt_ldap_stg=srvc_mrt:\&subsrvc_ldap:\&env_stg
+uc3_mrt_replic_stg=srvc_mrt:\&subsrvc_replic:\&env_stg
+uc3_mrt_store_stg=srvc_mrt:\&subsrvc_store:\&env_stg
+uc3_mrt_ui_stg=srvc_mrt:\&subsrvc_ui:\&env_stg
+uc3_mrt_zookeeper_stg=srvc_mrt:\&subsrvc_zookeeper:\&env_stg
+
+uc3_mrt_access_prd=srvc_mrt:\&subsrvc_access:\&env_prd
+uc3_mrt_audit_prd=srvc_mrt:\&subsrvc_audit:\&env_prd
+uc3_mrt_ingest_prd=srvc_mrt:\&subsrvc_ingest:\&env_prd
+uc3_mrt_inventory_prd=srvc_mrt:\&subsrvc_inventory:\&env_prd
+uc3_mrt_ldap_prd=srvc_mrt:\&subsrvc_ldap:\&env_prd
+uc3_mrt_replic_prd=srvc_mrt:\&subsrvc_replic:\&env_prd
+uc3_mrt_store_prd=srvc_mrt:\&subsrvc_store:\&env_prd
+uc3_mrt_ui_prd=srvc_mrt:\&subsrvc_ui:\&env_prd
+uc3_mrt_zookeeper_prd=srvc_mrt:\&subsrvc_zookeeper:\&env_prd
