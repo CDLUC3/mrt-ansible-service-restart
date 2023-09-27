@@ -33,6 +33,7 @@ Clone this git repo into your home directory on the command hosts:
 #### Prepare your shell session
 
 1. Be sure your python virtual environment where ansible is installed is activated:
+
        ~> pyenv version
        ~> pyenv global 3.9.16
 
@@ -65,6 +66,9 @@ Supply an additional commandline environment var (`exec=true`) to actully execut
 
     mrt-ansible-service-restart> ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_store_stg -e service_name=mrt-store -e exec=true
 
+
+----------------------------------------------------
+----------------------------------------------------
 
 
 ### TODO
