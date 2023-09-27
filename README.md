@@ -15,47 +15,75 @@ for complete instructions on the following:
   - [Install and configure `uc3.aws_ec2` inventory](https://github.com/CDLUC3/uc3ops-ansible-inventory#configure-uc3aws_ec2-inventory)
 
 
+After completing the above, validate you can run ansible inventory queries using `uc3.aws_ec2`:
+
+    > ansible --list-hosts srvc_mrt | head
+
+
+
 ### Installation
 
-Clone this git repo into your command hosts
-```
--bash-4.2$ git clone git@github-uc3ops-ansible-inventory:CDLUC3/mrt-ansible-service-restart.git
-Cloning into 'mrt-ansible-service-restart'...
--bash-4.2$ cd mrt-ansible-service-restart/
-```
+Clone this git repo into your home directory on the command hosts:
+
+    > git clone git@github.com:CDLUC3/mrt-ansible-service-restart.git
 
 
 ### Usage
 
-Be sure your python virtual environment where ansible is installed is activated:
-```
--bash-4.2$ pyenv version
-system (set by /apps/uc3aws/.pyenv/version)
--bash-4.2$ pyenv versions
-* system (set by /apps/uc3aws/.pyenv/version)
-  2.7.18
-  3.9.16
--bash-4.2$ pyenv global 3.9.16
--bash-4.2$ pyenv which ansible
-/apps/uc3aws/.pyenv/versions/3.9.16/bin/ansible
-```
+#### Prepare your shell session
 
-To make use of predefined `fqsn` host groupings, source the file `etc/service_groups.rc` into
+1. Be sure your python virtual environment where ansible is installed is activated:
+       ~> pyenv version
+       ~> pyenv global 3.9.16
+
+2. To make use of predefined `fqsn` host groupings, source the file `etc/service_groups.rc` into
 your shell session:
 
-```
--bash-4.2$ ll etc/service_groups.rc
--rw-rw-r-- 1 uc3aws uc3aws 1314 Sep 26 11:35 service_groups.rc
--bash-4.2$ . etc/service_groups.rc 
-```
-
-Run the mrt_service_restart role in noop mode (default).
-```
+       > cd mrt-ansible-service-restart
+       mrt-ansible-service-restart> . etc/service_groups.rc
 
 
+#### Run ansible-playbook in noop mode (default)
+
+This playbook requires a hostlist and a `service_name` defined at the command line.
+
+The hostlist is calculated by `uc3.aws_ec2` inventory based on any of the set of service group
+environment vars set in `etc/service_groups.rc`.
+
+The `service_name` is the systemd service to restart.
+
+    mrt-ansible-service-restart> ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_ui_stg -e service_name=puma
+
+    mrt-ansible-service-restart> ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_inventory_prd -e service_name=mrt-inventory
+
+
+#### Run for reals
+
+Supply an additional commandline environment var (`exec=true`) to actully execute the restarts:
+
+    mrt-ansible-service-restart> ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_inventory_prd -e service_name=mrt-inventory -e exec=true
+
+    mrt-ansible-service-restart> ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_store_stg -e service_name=mrt-store -e exec=true
 
 
 
+### TODO
+
+- report which AZ is processing at each control loop iteration
+- when running in noop, report targetgroup configs and systemctl status.
+- when restarting a service not in an ALB, validate the service is running properly (how?)
+- when restarting a ALB managed service, make sure there are at least two targets in the targetgroups before running in any AZ.
+
+
+
+
+
+
+
+
+### What it does and how it does it
+
+predefined `fqsn` host groupings
 
 
 
