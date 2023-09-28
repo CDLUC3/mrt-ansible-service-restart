@@ -16,6 +16,7 @@ mrt_services:
 - mrt-inventory
 - mrt-replic
 - mrt-store
+- ldap
 - puma
 
 

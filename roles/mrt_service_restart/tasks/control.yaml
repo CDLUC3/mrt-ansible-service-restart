@@ -1,16 +1,18 @@
 ---
 
+- name: Report availability zone
+  debug:
+    msg: "Processing availability zone {{ az }}"
+
 - when: ansible_ec2_placement_availability_zone == az
   block:
-  
+
   - name: Handle ALB target de-registration
     include_tasks: roles/mrt_service_restart/tasks/deregister_elb_target.yaml
-    when: exec and not do_not_deregister
-  
+
   - name: Restart service
     include_tasks: roles/mrt_service_restart/tasks/restart_mrt_service.yaml
-    when: exec
-  
+
   - name: Handle ALB target re-registration
     include_tasks: roles/mrt_service_restart/tasks/reregister_elb_target.yaml
     when: exec and not do_not_deregister

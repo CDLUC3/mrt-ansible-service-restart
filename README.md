@@ -73,8 +73,8 @@ Supply an additional commandline environment var (`exec=true`) to actully execut
 
 ### TODO
 
-- report which AZ is processing at each control loop iteration
-- when running in noop, report targetgroup configs and systemctl status.
+done - report which AZ is processing at each control loop iteration
+DONE - when running in noop, report targetgroup configs and systemctl status.
 - when restarting a service not in an ALB, validate the service is running properly (how?)
 - when restarting a ALB managed service, make sure there are at least two targets in the targetgroups before running in any AZ.
 

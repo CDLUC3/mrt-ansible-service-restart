@@ -26,7 +26,22 @@
 
   - name: Get EC2 Metadata
     amazon.aws.ec2_metadata_facts:
+
+  - name: Get initial list of target groups
+    delegate_to: localhost
+    community.aws.elb_target_info:
+      instance_id: "{{ ansible_ec2_instance_id }}"
+      region: "{{ ansible_ec2_placement_region }}"
+      aws_config:
+        retries:
+          total_max_attempts: 10
+          mode: adaptive
+    register: target_info
   
+  - name: save fact for later
+    ansible.builtin.set_fact:
+      original_tgs: "{{ target_info.instance_target_groups }}"
+
   - name: Run control task for each AZ
     include_tasks: roles/mrt_service_restart/tasks/control.yaml
     loop: "{{ availability_zones }}"
