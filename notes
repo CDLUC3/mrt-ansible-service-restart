@@ -1,3 +1,39 @@
+------------------------------
+Thu Sep 28 15:00:19 PDT 2023
+
+QA teesting of role on all mrt services (with dave)
+
+- mrt-access
+- mrt-audit
+- mrt-ingest
+- mrt-inventory
+- mrt-replic
+- mrt-store
+- ldap
+- puma
+
+
+- mrt-access
+
+agould@uc3-aws2-ops:~/git/github/cdluc3/mrt-ansible-service-restart> ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_access_stg -e service_name=mrt-access
+
+
+- mrt-audit
+
+agould@uc3-aws2-ops:~/git/github/cdluc3/mrt-ansible-service-restart> ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_audit_stg -e service_name=mrt-audit
+
+
+- mrt-ingest
+- mrt-inventory
+- mrt-replic
+- mrt-store
+- ldap
+- puma
+
+
+
+
+------------------------------
 https://stackoverflow.com/questions/58908625/issue-looping-on-block-containing-a-set-of-tasks-in-ansible
 
 
