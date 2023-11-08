@@ -5,18 +5,18 @@
 - when: original_tgs is defined and original_tgs | length > 0
   block:
 
-  - name: show target groups - dereg
+  - name: "show target groups - dereg - {{ az }}"
     debug:
       msg: "Associated target groups: {{ original_tgs }}"
 
-  - name: check for do_not_deregister
+  - name: "check for do_not_deregister - {{ az }}"
     debug:
       msg: "This host is tagged as 'do_not_deregister'.  Skipping ELB deregistration"
     when: do_not_deregister
   
   - when: exec and not do_not_deregister
     block:
-      - name: Deregister instance from all target groups
+      - name: "Deregister instance from all target groups - {{ az }}"
         delegate_to: localhost
         community.aws.elb_target:
             target_group_arn: "{{ item.0.target_group_arn }}"
@@ -34,7 +34,7 @@
         # target group.  An alternative would be to run all of the 'elb_target'
         # tasks async and wait for them to finish.
   
-      - name: wait for all targets to deregister
+      - name: "wait for all targets to deregister - {{ az }}"
         delegate_to: localhost
         community.aws.elb_target_info:
           get_unused_target_groups: false

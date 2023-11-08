@@ -1,6 +1,6 @@
 ---
 
-- name: Validate cdlsysctl script
+- name: "Validate cdlsysctl script - {{ az }}"
   ansible.builtin.stat:
     path: "{{ cdlsysctl }}"
   register: script_status
@@ -11,22 +11,22 @@
   - when: exec
     block:
 
-    - name: Run cdlsysctl restart
+    - name: "Run cdlsysctl restart - {{ az }}"
       ansible.builtin.command: "sudo {{ cdlsysctl }} restart {{ service_name }}"
       register: result
       ignore_errors: true
     
-    - name: Report restart failure
+    - name: "Report restart failure - {{ az }}"
       debug:
         msg: "{{ result.stderr_lines }}"
       when: result.failed
       failed_when: true
   
-  - name: Run cdlsysctl status
+  - name: "Run cdlsysctl status - {{ az }}"
     ansible.builtin.command: "{{ cdlsysctl }} status {{ service_name }}"
     register: result
   
-  - name: Report service status
+  - name: "Report service status - {{ az }}"
     debug:
       msg: "{{ result.stdout_lines }}"
     when: result.stdout_lines is defined

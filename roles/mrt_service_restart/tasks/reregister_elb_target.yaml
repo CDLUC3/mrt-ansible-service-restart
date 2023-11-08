@@ -3,7 +3,7 @@
 - when: exec and original_tgs|length > 0
   block:
 
-  - name: reregister in elbv2s
+  - name: "reregister in elbv2s - {{ az }}"
     delegate_to: localhost
     community.aws.elb_target:
       region: "{{ ansible_ec2_placement_region }}"
@@ -18,7 +18,7 @@
       - "targets"
 
   # wait until all groups associated with instance are 'healthy' or 'unused'
-  - name: wait for registration
+  - name: "wait for registration - {{ az }}"
     delegate_to: localhost
     community.aws.elb_target_info:
       get_unused_target_groups: false
