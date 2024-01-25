@@ -1,10 +1,30 @@
 ---
+
+# Command line vars (-e varname=true|false)
+#
+# **Required** - Name of the service to deploy/restart.  Must be one of `mrt_services`
+service_name: ''
+#
+# Unless this is set to true (-e exec=true) all actions run in no-op mode
 exec: false
+#
+# Set this to false to prevent puppet runs
+run_puppet: true
+#
+# Set this to true (-e deploy=true) to enable service deployment tasks
+deploy: false
+#
+# Set this to false to prevent service restarts
+restart: true
+
+# These can be set in host_vars to disable actions on specific hosts.
+# See `../host_vars/notes`
+#
+do_not_deploy: false
 do_not_restart: false
 do_not_deregister: false
-service_name: ''
 
-cdlsysctl: /usr/local/bin/cdlsysctl
+
 availability_zones:
 - us-west-2a
 - us-west-2b
@@ -18,6 +38,15 @@ mrt_services:
 - mrt-store
 - ldap
 - puma
-
-
+service_user:
+  mrt-access: dpr2store
+  mrt-audit: dpr2
+  mrt-ingest: dpr2
+  mrt-inventory: dpr2
+  mrt-replic: dpr2
+  mrt-store: dpr2store
+  
+cdlsysctl: /usr/local/bin/cdlsysctl
+puppet_apply_script: /apps/uc3puppet/bin/uc3_pupapply.sh
+cap_deploy_script: /{{ service_user[service_name] }}/bin/cap_deploy.sh
 

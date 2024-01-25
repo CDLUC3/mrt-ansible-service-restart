@@ -6,8 +6,17 @@
   - name: "Handle ALB target de-registration - {{ az }}"
     include_tasks: roles/mrt_service_restart/tasks/deregister_elb_target.yaml
 
+  - name: "Run Puppet - {{ az }}"
+    include_tasks: roles/mrt_service_restart/tasks/run_puppet_apply.yaml
+    when: run_puppet
+
+  - name: "Deploy service - {{ az }}"
+    include_tasks: roles/mrt_service_restart/tasks/deploy_mrt_service.yaml
+    when: deploy
+
   - name: "Restart service - {{ az }}"
     include_tasks: roles/mrt_service_restart/tasks/restart_mrt_service.yaml
+    when: restart
 
   - name: "Handle ALB target re-registration - {{ az }}"
     include_tasks: roles/mrt_service_restart/tasks/reregister_elb_target.yaml

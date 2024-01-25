@@ -1,0 +1,13 @@
+---
+
+- name: "Check for Capisrano deploy script - {{ az }}"
+  ansible.builtin.stat:
+    path: "{{ cap_deploy_script }}"
+  register: script_status
+
+- name: "run cap deploy - {{ az }}"
+  become: true
+  become_method: sudo
+  become_user: "{{ service_user[service_name] }}"
+  ansible.builtin.command: "{{ cap_deploy_script }}"
+  when: exec and not do_not_deploy and script_status.stat.executable is defined and script_status.stat.executable

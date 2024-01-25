@@ -1,9 +1,5 @@
 ---
 
-#
-# Validate user provided 'service_name' variable
-#
-
 - name: Validate user provided 'service_name' variable  
   debug:
     msg: "FAIL! service_name '{{ service_name }}' is invalid. Must be one of {{ mrt_services }}."

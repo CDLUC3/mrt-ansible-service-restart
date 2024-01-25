@@ -8,7 +8,7 @@
 - when: script_status.stat.executable is defined and script_status.stat.executable
   block:
 
-  - when: exec
+  - when: exec and not do_not_restart
     block:
 
     - name: "Run cdlsysctl restart - {{ az }}"

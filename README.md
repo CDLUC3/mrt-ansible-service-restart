@@ -67,6 +67,34 @@ Supply an additional commandline environment var (`exec=true`) to actully execut
     mrt-ansible-service-restart> ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_store_stg -e service_name=mrt-store -e exec=true
 
 
+#### Cut-n-Paste
+
+Commandlines for running restarts for all services
+
+Stage:
+```
+. etc/service_groups.rc
+
+ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_access_stg -e service_name=mrt-access -e exec=true
+ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_audit_stg -e service_name=mrt-audit -e exec=true
+ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_ingest_stg -e service_name=mrt-ingest -e exec=true
+ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_inventory_stg -e service_name=mrt-inventory -e exec=true
+ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_replic_stg -e service_name=mrt-replic -e exec=true
+ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_store_stg -e service_name=mrt-store -e exec=true
+```
+
+Production:
+```
+. etc/service_groups.rc
+
+ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_access_prd -e service_name=mrt-access -e exec=true
+ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_audit_prd -e service_name=mrt-audit -e exec=true
+ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_ingest_prd -e service_name=mrt-ingest -e exec=true
+ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_inventory_prd -e service_name=mrt-inventory -e exec=true
+ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_replic_prd -e service_name=mrt-replic -e exec=true
+ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_store_prd -e service_name=mrt-store -e exec=true
+```
+
 ----------------------------------------------------
 ----------------------------------------------------
 

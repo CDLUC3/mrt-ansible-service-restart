@@ -1,0 +1,10 @@
+---
+
+- name: "Check for puppet apply script - {{ az }}"
+  ansible.builtin.stat:
+    path: "{{ puppet_apply_script }}"
+  register: script_status
+
+- name: "run puppet apply - {{ az }}"
+  ansible.builtin.command: "{{ puppet_apply_script }} --no-git-pull --quiet --exec"
+  when: exec and script_status.stat.executable is defined and script_status.stat.executable
