@@ -3,11 +3,11 @@ Merritt Ansible Service Manager
 
 This project consists of 2 ansible playbooks for managing Merritt services:
 
-- [**mrt-service-restart.yaml**](#mrt-service-restart.yaml)
-- [**report-deployed-webapp.yaml**](#report-deployed-webapp.yaml)
+- [**mrt-service-restart.yaml**](#playbook-mrt-service-restart)
+- [**report-deployed-webapp.yaml**](#playbook-report-deployed-webapp.yaml)
 
 
-## `mrt-service-restart.yaml`
+## Playbook mrt-service-restart
 
 An Ansible role for doing rolling deployments and restarts of load-balanced Merritt applications.
 
@@ -206,12 +206,12 @@ ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_store_prd -    e service_n
 
 
 
-## `report-deployed-webapp.yaml`
+## Playbook report-deployed-webapp
 
 This playbook reports both the configured version of the webapp build tag and
 the currently deployed build tag.  It does this by grepping for
-"MERRITT_SERVICE_RELEASE" in ~/bin/cap_deploy.sh, and then downloading
-"build.content.txt" from the webapp running on the localhost.
+`MERRITT_SERVICE_RELEASE` in `~/bin/cap_deploy.sh`, and then downloading
+`build.content.txt` from the webapp running on the localhost.
 
 Usage example:
 ```
