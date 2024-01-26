@@ -4,7 +4,7 @@ Merritt Ansible Service Manager
 This project consists of 2 ansible playbooks for managing Merritt services:
 
 - [**mrt-service-restart.yaml**](#playbook-mrt-service-restart)
-- [**report-deployed-webapp.yaml**](#playbook-report-deployed-webapp.yaml)
+- [**report-deployed-webapp.yaml**](#playbook-report-deployed-webapp)
 
 
 ## Playbook mrt-service-restart
