@@ -5,9 +5,23 @@
     path: "{{ cap_deploy_script }}"
   register: script_status
 
-- name: "run cap deploy - {{ az }}"
-  become: true
-  become_method: sudo
-  become_user: "{{ service_user[service_name] }}"
-  ansible.builtin.command: "{{ cap_deploy_script }}"
-  when: exec and not do_not_deploy and script_status.stat.executable is defined and script_status.stat.executable
+- when: exec|bool and script_status.stat.executable is defined and script_status.stat.executable
+  block:
+
+  - name: "run cap deploy - {{ az }}"
+    become: true
+    become_method: sudo
+    become_user: "{{ service_user[service_name] }}"
+    ansible.builtin.command: "{{ cap_deploy_script }}"
+    register: result
+
+  - name: "Report cap deploy success - {{ az }}"
+    debug:
+      msg: "{{ result.stdout_lines }}"
+    when: not result.failed
+  
+  - name: "Report cap deploy failure - {{ az }}"
+    debug:
+      msg: "{{ result.stderr_lines }}"
+    when: result.failed
+    failed_when: true

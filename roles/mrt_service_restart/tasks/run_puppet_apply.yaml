@@ -5,6 +5,23 @@
     path: "{{ puppet_apply_script }}"
   register: script_status
 
-- name: "run puppet apply - {{ az }}"
-  ansible.builtin.command: "{{ puppet_apply_script }} --no-git-pull --quiet --exec"
-  when: exec and script_status.stat.executable is defined and script_status.stat.executable
+- when: exec|bool and script_status.stat.executable is defined and script_status.stat.executable
+  block:
+
+  - name: "run puppet apply - {{ az }}"
+    become: true
+    become_method: sudo
+    become_user: "{{ puppet_user }}"
+    ansible.builtin.command: "{{ puppet_apply_script }} --exec"
+    register: result
+
+  - name: "Report puppet apply success - {{ az }}"
+    debug:
+      msg: "{{ result.stdout_lines }}"
+    when: not result.failed
+
+  - name: "Report puppet apply failure - {{ az }}"
+    debug:
+      msg: "{{ result.stderr_lines }}"
+    when: result.failed
+    failed_when: true

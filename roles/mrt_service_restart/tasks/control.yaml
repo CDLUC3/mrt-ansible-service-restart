@@ -8,16 +8,16 @@
 
   - name: "Run Puppet - {{ az }}"
     include_tasks: roles/mrt_service_restart/tasks/run_puppet_apply.yaml
-    when: run_puppet
+    when: run_puppet|bool
 
   - name: "Deploy service - {{ az }}"
     include_tasks: roles/mrt_service_restart/tasks/deploy_mrt_service.yaml
-    when: deploy
+    when: deploy|bool and not do_not_deploy
 
   - name: "Restart service - {{ az }}"
     include_tasks: roles/mrt_service_restart/tasks/restart_mrt_service.yaml
-    when: restart
+    when: restart|bool and not do_not_restart
 
   - name: "Handle ALB target re-registration - {{ az }}"
     include_tasks: roles/mrt_service_restart/tasks/reregister_elb_target.yaml
-    when: exec and not do_not_deregister
+    when: exec|bool and not do_not_deregister

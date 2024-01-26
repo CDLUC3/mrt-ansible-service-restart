@@ -14,7 +14,7 @@
       msg: "This host is tagged as 'do_not_deregister'.  Skipping ELB deregistration"
     when: do_not_deregister
   
-  - when: exec and not do_not_deregister
+  - when: exec|bool and not do_not_deregister
     block:
       - name: "Deregister instance from all target groups - {{ az }}"
         delegate_to: localhost
