@@ -1,0 +1,32 @@
+---
+# This playbook reports both the configured version of the webapp build tag and
+# the currently deployed build tag.  It does this by grepping for
+# "MERRITT_SERVICE_RELEASE" in ~/bin/cap_deploy.sh, and then downloading
+# "build.content.txt" from the webapp running on the localhost.
+#
+# Usage example:
+#   . etc/service_groups.rc
+#   export ANSIBLE_STDOUT_CALLBACK=yaml
+#   ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_audit_prd -e service_name=mrt-audit
+
+- hosts: all
+  tasks:
+  - name: Query configured service release
+    become: true
+    become_method: sudo
+    become_user: "{{ service_user[service_name] }}"
+    ansible.builtin.command: "grep 'MERRITT_SERVICE_RELEASE=' {{ cap_deploy_script }}"
+    register: configured
+
+  - name: "Query deployed build tag"
+    ansible.builtin.uri:
+      url: "{{ build_content_url[service_name] }}"
+      return_content: true
+    register: deployed
+
+  - name: Report configured vs. deployed
+    debug:
+      msg: "{{ configured.stdout_lines[0] }}\n{{ deployed.content }}"
+    when: not configured.failed and deployed.content is defined 
+
+

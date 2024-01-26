@@ -1,0 +1,24 @@
+Fri Jan 26 08:55:56 AM PST 2024
+
+Commands run:
+
+OUTFILE=notes.merritt_deployments.20240126
+
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_access_stg -e service_name=mrt-access >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_access_prd -e service_name=mrt-access >> $OUTFILE
+
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_audit_stg -e service_name=mrt-audit >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_audit_prd -e service_name=mrt-audit >> $OUTFILE
+
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_inventory_stg -e service_name=mrt-inventory >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_inventory_prd -e service_name=mrt-inventory >> $OUTFILE
+
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_ingest_stg -e service_name=mrt-ingest >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_ingest_prd -e service_name=mrt-ingest >> $OUTFILE
+
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_replic_stg -e service_name=mrt-replic >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_replic_prd -e service_name=mrt-replic >> $OUTFILE
+
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_store_stg -e service_name=mrt-store >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_store_prd -e service_name=mrt-store >> $OUTFILE
+
