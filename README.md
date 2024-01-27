@@ -261,6 +261,6 @@ DONE - when running in noop, report targetgroup configs and systemctl status.
 - when restarting a ALB managed service, make sure there are at least two targets in the targetgroups before running in any AZ.
 DONE - add optional deploy task for Tomcat Webapps.
 DONE - add playbook to report configured vs. deployed build tag for Tomcat webapps.
-- validate the service_name is for a Tomcat webapp when running in deploy mode.
+DONE - validate the service_name is for a Tomcat webapp when running in deploy mode.
 - preview configured rev vs. deployed rev when running in deploy mode.
 - when running in deploy mode if configure rev and deployed rev are the same, then skip.

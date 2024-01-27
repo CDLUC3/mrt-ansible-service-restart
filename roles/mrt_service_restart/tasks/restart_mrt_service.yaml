@@ -31,15 +31,17 @@
       msg: "{{ result.stdout_lines }}"
     when: result.stdout_lines is defined
 
-  - name: "Query build tag - {{ az }}"
-    ansible.builtin.uri:
-      url: "{{ build_content_url[service_name] }}"
-      return_content: true
-    register: response
-    #failed_when: response is failed or "'Build tag' not in response.content"
+  - when: tomcat_services is ansible.builtin.contains(service_name)
+    block:
+    - name: "Query build tag - {{ az }}"
+      ansible.builtin.uri:
+        url: "{{ build_content_url[service_name] }}"
+        return_content: true
+      register: response
+      #failed_when: response is failed or "'Build tag' not in response.content"
 
-  - name: "Report build tag - {{ az }}"
-    debug:
-      msg: "{{ response.content }}"
-    when: response.content is defined
+    - name: "Report build tag - {{ az }}"
+      debug:
+        msg: "{{ response.content }}"
+      when: response.content is defined
 
