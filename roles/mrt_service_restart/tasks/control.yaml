@@ -3,21 +3,21 @@
 - when: ansible_ec2_placement_availability_zone == az
   block:
 
-  ## - name: "Handle ALB target de-registration - {{ az }}"
-  ##   include_tasks: roles/mrt_service_restart/tasks/deregister_elb_target.yaml
+  - name: "Handle ALB target de-registration - {{ az }}"
+    include_tasks: roles/mrt_service_restart/tasks/deregister_elb_target.yaml
 
-  ## - name: "Run Puppet - {{ az }}"
-  ##   include_tasks: roles/mrt_service_restart/tasks/run_puppet_apply.yaml
-  ##   when: run_puppet|bool
+  - name: "Run Puppet - {{ az }}"
+    include_tasks: roles/mrt_service_restart/tasks/run_puppet_apply.yaml
+    when: run_puppet|bool
 
   - name: "Deploy service - {{ az }}"
     include_tasks: roles/mrt_service_restart/tasks/deploy_mrt_service.yaml
     when: deploy|bool and not do_not_deploy
 
-  ## - name: "Restart service - {{ az }}"
-  ##   include_tasks: roles/mrt_service_restart/tasks/restart_mrt_service.yaml
-  ##   when: restart|bool and not do_not_restart
+  - name: "Restart service - {{ az }}"
+    include_tasks: roles/mrt_service_restart/tasks/restart_mrt_service.yaml
+    when: restart|bool and not do_not_restart
 
-  ## - name: "Handle ALB target re-registration - {{ az }}"
-  ##   include_tasks: roles/mrt_service_restart/tasks/reregister_elb_target.yaml
-  ##   when: exec|bool and not do_not_deregister
+  - name: "Handle ALB target re-registration - {{ az }}"
+    include_tasks: roles/mrt_service_restart/tasks/reregister_elb_target.yaml
+    when: exec|bool and not do_not_deregister

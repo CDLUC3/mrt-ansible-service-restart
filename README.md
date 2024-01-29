@@ -262,5 +262,5 @@ DONE - when running in noop, report targetgroup configs and systemctl status.
 DONE - add optional deploy task for Tomcat Webapps.
 DONE - add playbook to report configured vs. deployed build tag for Tomcat webapps.
 DONE - validate the service_name is for a Tomcat webapp when running in deploy mode.
-- preview configured rev vs. deployed rev when running in deploy mode.
-- when running in deploy mode if configure rev and deployed rev are the same, then skip.
+DONE - preview configured rev vs. deployed rev when running in deploy mode.
+DONE - when running in deploy mode if configure rev and deployed rev are the same, then skip.

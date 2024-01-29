@@ -40,7 +40,7 @@
       register: response
       #failed_when: response is failed or "'Build tag' not in response.content"
 
-    - name: "Report build tag - {{ az }}"
+    - name: "Report final build tag - {{ az }}"
       debug:
         msg: "{{ response.content }}"
       when: response.content is defined

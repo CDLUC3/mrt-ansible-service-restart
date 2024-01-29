@@ -18,37 +18,21 @@
     return_content: true
   register: deployed
 
+- name: "set facts 'configured_rev' and 'deployed_rev'"
+  ansible.builtin.set_fact:
+    configured_rev: "{{ configured.stdout_lines[0].split('=')[-1] }}"
+    deployed_rev: "{{ deployed.content.split()[-1] }}"
+
+- name: "Test if configured service release is already deployed"
+  ansible.builtin.set_fact:
+    already_deployed: "{{ ansible_facts.configured_rev == ansible_facts.deployed_rev }}"
+
 - name: "Report configured vs. deployed"
   debug:
-    msg: "Configured: {{ configured.stdout_lines[0].split('=')[-1] }}\nDeployed:   {{ deployed.content.split()[-1] }}"
-  when: not configured.failed and deployed.content is defined
-
-- name: "Check if configured build tag is already deployed"
-  debug:
-    msg: "Configured build tag is already Deployed. Skipping deployment."
-  when: not configured.failed and deployed.content is defined and configured_rev == deployed_rev
-  vars:
-    configured_rev: "{{ configured.stdout_lines[0].split('=')[-1] }}"
-    deployed_rev: "{{ deployed.content.split()[-1] }}"
-  # register: already_deployed
-
-
-
-# https://docs.ansible.com/ansible/latest/collections/ansible/builtin/assert_module.html
-# how do I register a boolean var when comparing statements?
-- name: register already_deployed var
-  vars:
-    configured_rev: "{{ configured.stdout_lines[0].split('=')[-1] }}"
-    deployed_rev: "{{ deployed.content.split()[-1] }}"
-  assert:
-    that: 
-      - configured_rev == deployed_rev
-  register: already_deployed    
-  ignore_errors: True
-
-
-
-
+    msg: |
+      "configured_rev: {{ configured_rev }}"
+      "deployed_rev: {{ deployed_rev }}"
+      "already_deployed: {{ already_deployed }}"
 
 - when: exec|bool and script_status.stat.executable is defined and script_status.stat.executable and not already_deployed
   block:
