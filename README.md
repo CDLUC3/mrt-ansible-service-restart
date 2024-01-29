@@ -1,6 +1,14 @@
 Merritt Ansible Service Manager
 ===============================
 
+This repository supports the [Merritt Preservation System](https://github.com/CDLUC3/mrt-doc).
+
+## Purpose
+
+This repository contains Ansible playbooks to refresh service configuration and deployment across Merritt hosts.
+
+## Overview
+
 This project consists of 2 ansible playbooks for managing Merritt services:
 
 - [**mrt-service-restart.yaml**](#playbook-mrt-service-restart)
