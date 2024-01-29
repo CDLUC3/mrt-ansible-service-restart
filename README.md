@@ -11,17 +11,17 @@ This repository contains Ansible playbooks to refresh service configuration and 
 
 This project consists of 2 ansible playbooks for managing Merritt services:
 
-- [**mrt-service-restart.yaml**](#playbook-mrt-service-restart)
-- [**report-deployed-webapp.yaml**](#playbook-report-deployed-webapp)
+- [**mrt_service_restart.yaml**](#playbook_mrt_service_restart)
+- [**report_deployed_webapp.yaml**](#playbook_report_deployed_webapp)
 
 
-## Playbook mrt-service-restart
+## Playbook mrt_service_restart
 
 An Ansible role for doing rolling deployments and restarts of load-balanced Merritt applications.
 
 ### What it does
 
-The `mrt-service-restart.yaml` playbook does the following:
+The `mrt_service_restart.yaml` playbook does the following:
 - Determine to which ALB TargetGroups the instance is registered (if any)
 - Cycle through each AWS Availablity zone and run the following tasks:
   - Handle ALB target de-registration
@@ -40,7 +40,7 @@ can be restarted.
 ### Command syntax and option summary
 
 ```
-ansible-playbook mrt-service-restart.yaml -l <host_list> -e service_name=<string>
+ansible_playbook mrt_service_restart.yaml _l <host_list> _e service_name=<string>
 ```
 
 #### Arguments
@@ -214,7 +214,7 @@ ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_store_prd -    e service_n
 
 
 
-## Playbook report-deployed-webapp
+## Playbook report_deployed_webapp
 
 This playbook reports both the configured version of the webapp build tag and
 the currently deployed build tag.  It does this by grepping for
@@ -225,7 +225,7 @@ Usage example:
 ```
 . etc/service_groups.rc
 export ANSIBLE_STDOUT_CALLBACK=yaml
-ansible-playbook report-deployed-webapp.yaml -l $uc3_mrt_audit_prd -e service_name=mrt-audit
+ansible_playbook report_deployed_webapp.yaml _l $uc3_mrt_audit_prd _e service_name=mrt_audit
 ```
 
 
@@ -236,29 +236,32 @@ ansible-playbook report-deployed-webapp.yaml -l $uc3_mrt_audit_prd -e service_na
 export ANSIBLE_STDOUT_CALLBACK=yaml
 OUTFILE=tmp/merritt_deployments.$(date +"%Y%m%d")
 
-ansible-playbook report-deployed-webapp.yaml -l $uc3_mrt_access_stg -e service_name=mrt-access >> $OUTFILE
-ansible-playbook report-deployed-webapp.yaml -l $uc3_mrt_access_prd -e service_name=mrt-access >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_access_stg -e service_name=mrt-access >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_access_prd -e service_name=mrt-access >> $OUTFILE
 
-ansible-playbook report-deployed-webapp.yaml -l $uc3_mrt_audit_stg -e service_name=mrt-audit >> $OUTFILE
-ansible-playbook report-deployed-webapp.yaml -l $uc3_mrt_audit_prd -e service_name=mrt-audit >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_audit_stg -e service_name=mrt-audit >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_audit_prd -e service_name=mrt-audit >> $OUTFILE
 
-ansible-playbook report-deployed-webapp.yaml -l $uc3_mrt_inventory_stg -e service_name=mrt-inventory >> $OUTFILE
-ansible-playbook report-deployed-webapp.yaml -l $uc3_mrt_inventory_prd -e service_name=mrt-inventory >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_inventory_stg -e service_name=mrt-inventory >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_inventory_prd -e service_name=mrt-inventory >> $OUTFILE
 
-ansible-playbook report-deployed-webapp.yaml -l $uc3_mrt_ingest_stg -e service_name=mrt-ingest >> $OUTFILE
-ansible-playbook report-deployed-webapp.yaml -l $uc3_mrt_ingest_prd -e service_name=mrt-ingest >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_ingest_stg -e service_name=mrt-ingest >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_ingest_prd -e service_name=mrt-ingest >> $OUTFILE
 
-ansible-playbook report-deployed-webapp.yaml -l $uc3_mrt_replic_stg -e service_name=mrt-replic >> $OUTFILE
-ansible-playbook report-deployed-webapp.yaml -l $uc3_mrt_replic_prd -e service_name=mrt-replic >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_replic_stg -e service_name=mrt-replic >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_replic_prd -e service_name=mrt-replic >> $OUTFILE
 
-ansible-playbook report-deployed-webapp.yaml -l $uc3_mrt_store_stg -e service_name=mrt-store >> $OUTFILE
-ansible-playbook report-deployed-webapp.yaml -l $uc3_mrt_store_prd -e service_name=mrt-store >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_store_stg -e service_name=mrt-store >> $OUTFILE
+ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_store_prd -e service_name=mrt-store >> $OUTFILE
 ```
 
 
 ----------------------------------------------------
 
 
+
+### ISSUES
+- run_puppet fails for dave - "no sudo password"
 
 
 ### TODO
