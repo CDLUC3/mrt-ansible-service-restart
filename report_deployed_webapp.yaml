@@ -12,9 +12,6 @@
 - hosts: all
   tasks:
   - name: Query configured service release
-    become: true
-    become_method: sudo
-    become_user: "{{ service_user[service_name] }}"
     ansible.builtin.command: "grep 'MERRITT_SERVICE_RELEASE=' {{ cap_deploy_script }}"
     register: configured
 
