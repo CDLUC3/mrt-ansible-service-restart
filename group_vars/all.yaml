@@ -23,6 +23,7 @@ restart: true
 do_not_deploy: false
 do_not_restart: false
 do_not_deregister: false
+do_not_manage: false
 
 
 availability_zones:
