@@ -261,7 +261,7 @@ ansible-playbook report_deployed_webapp.yaml -l $uc3_mrt_store_prd -e service_na
 
 
 ### ISSUES
-- run_puppet fails for dave - "no sudo password"
+FIXED - run_puppet fails for dave - "no sudo password"
 
 
 ### TODO

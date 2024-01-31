@@ -1,0 +1,45 @@
+Wed Jan 31 13:09:20 PST 2024
+
+the run_puppet.yaml task has a become_user section that is failing:
+
+ - name: "run puppet apply - {{ az }}"
+    become: true
+    become_method: sudo
+    become_user: "{{ puppet_user }}"
+    ansible.builtin.command: "{{ puppet_apply_script }} --exec"
+
+This works for agould account which has full sudo privs but fails for uc3 developers, who
+only have
+
+   (root) NOPASSWD:  /bin/su - uc3puppet
+
+
+This was the error message:
+
+    fatal: [uc3-mrtaudit02x2-stg]: FAILED! => 
+      msg: Missing sudo password
+
+
+I determined the proper sudoers systax must be
+
+    %uc3devops      UC3ADM=(uc3puppet) NOPASSWD: ALL
+
+
+How to Debug ansible-playbook
+-----------------------------
+
+I had to get ansible-playbook to give more detailed error message.  What was it doing when
+executing as become_user.  I did this as follows:
+
+    export ANSIBLE_KEEP_REMOTE_FILES=1 
+    export ANSIBLE_STDOUT_CALLBACK=yaml
+    ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_audit_stg -e service_name=mrt-audit -e exec=true -e restart=false -e run_puppet=true -vvv
+
+
+the 3 extra verbose flags (-vvv) gave me the following output:
+
+    <uc3-mrtaudit01x2-stg> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o StrictHostKeyChecking=no -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o ConnectTimeout=10 -o 'ControlPath="/home/loy/.ansible/cp/74db6dd956"' -tt uc3-mrtaudit01x2-stg '/bin/sh -c '"'"'sudo -H -S -n  -u uc3puppet /bin/sh -c '"'"'"'"'"'"'"'"'echo BECOME-SUCCESS-bgxgevfgsvdoktgxckdbumbbytaipobi ; /usr/bin/env python /var/tmp/ansible-tmp-1706733931.6067529-23451-97398418278758/AnsiballZ_command.py'"'"'"'"'"'"'"'"' && sleep 0'"'"''
+    Escalation requires password
+    fatal: [uc3-mrtaudit02x2-stg]: FAILED! => 
+      msg: Missing sudo password
+
