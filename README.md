@@ -159,6 +159,7 @@ Supply extra var `deploy=true` at the commandline to initiate deployment of java
 Stage:
 ```
 . etc/service_groups.rc
+export ANSIBLE_STDOUT_CALLBACK=yaml
 
 ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_access_stg    -e service_name=mrt-access    -e exec=true
 ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_audit_stg     -e service_name=mrt-audit     -e exec=true
@@ -173,6 +174,7 @@ ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_ldap_stg      -e service_n
 Production:
 ```
 . etc/service_groups.rc
+export ANSIBLE_STDOUT_CALLBACK=yaml
 
 ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_access_prd    -e service_name=mrt-access    -e exec=true
 ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_audit_prd     -e service_name=mrt-audit     -e exec=true
@@ -190,6 +192,7 @@ ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_ldap_prd      -e service_n
 Stage:
 ```
 . etc/service_groups.rc
+export ANSIBLE_STDOUT_CALLBACK=yaml
 
 ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_access_stg    -e service_name=mrt-access    -e deploy=true -e exec=true
 ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_audit_stg     -e service_name=mrt-audit     -e deploy=true -e exec=true
@@ -202,6 +205,7 @@ ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_store_stg -    e service_n
 Production:
 ```
 . etc/service_groups.rc
+export ANSIBLE_STDOUT_CALLBACK=yaml
 
 ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_access_prd    -e service_name=mrt-access    -e deploy=true -e exec=true
 ansible-playbook mrt_service_restart.yaml -l $uc3_mrt_audit_prd     -e service_name=mrt-audit     -e deploy=true -e exec=true
