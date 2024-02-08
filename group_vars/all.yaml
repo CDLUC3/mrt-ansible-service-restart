@@ -57,7 +57,7 @@ service_user:
 build_content_url:
   mrt-access: http://localhost:35121/static/build.content.txt
   mrt-audit: http://localhost:37001/mrtaudit/static/build.content.txt
-  mrt-ingest: http://localhost:33121/static/build.content.txt
+  mrt-ingest: http://localhost:33121/ingest/static/build.content.txt
   mrt-inventory: http://localhost:36121/mrtinv/static/build.content.txt
   mrt-replic: http://localhost:38001/mrtreplic/static/build.content.txt
   mrt-store: http://localhost:35121/static/build.content.txt
