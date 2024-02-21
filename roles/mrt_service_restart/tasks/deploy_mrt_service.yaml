@@ -22,7 +22,7 @@
 
 - name: "Test if configured service release is already deployed"
   ansible.builtin.set_fact:
-    already_deployed: "{{ ansible_facts.configured_rev == ansible_facts.deployed_rev }}"
+    already_deployed: "{{ configured_rev == deployed_rev }}"
 
 - name: "Report configured vs. deployed"
   debug:
