@@ -4,25 +4,30 @@
   ansible.builtin.stat:
     path: "{{ cap_deploy_script }}"
   register: script_status
+  ignore_errors: true
 
 - name: "Query configured service release"
   ansible.builtin.command: "grep 'MERRITT_SERVICE_RELEASE=' {{ cap_deploy_script }}"
   register: configured
+  ignore_errors: true
 
 - name: "Query deployed build tag"
   ansible.builtin.uri:
     url: "{{ build_content_url[service_name] }}"
     return_content: true
   register: deployed
+  ignore_errors: true
 
 - name: "set facts 'configured_rev' and 'deployed_rev'"
   ansible.builtin.set_fact:
     configured_rev: "{{ configured.stdout_lines[0].split('=')[-1] }}"
     deployed_rev: "{{ deployed.content.split()[-1] }}"
+  ignore_errors: true
 
 - name: "Test if configured service release is already deployed"
   ansible.builtin.set_fact:
     already_deployed: "{{ configured_rev == deployed_rev }}"
+  ignore_errors: true
 
 - name: "Report configured vs. deployed"
   debug:
@@ -30,6 +35,7 @@
       "configured_rev: {{ configured_rev }}"
       "deployed_rev: {{ deployed_rev }}"
       "already_deployed: {{ already_deployed }}"
+  ignore_errors: true
 
 - when: exec|bool and script_status.stat.executable is defined and script_status.stat.executable and not already_deployed
   block:
@@ -39,15 +45,10 @@
     become_method: sudo
     become_user: "{{ service_user[service_name] }}"
     ansible.builtin.command: "{{ cap_deploy_script }}"
-    register: result
+    register: cap_deploy
+    ignore_errors: true
 
   - name: "Report cap deploy success - {{ az }}"
     debug:
-      msg: "{{ result.stdout_lines }}"
-    when: not result.failed
-  
-  - name: "Report cap deploy failure - {{ az }}"
-    debug:
-      msg: "{{ result.stderr_lines }}"
-    when: result.failed
-    failed_when: true
+      msg: "{{ cap_deploy.stdout_lines }}"
+    when: not cap_deploy.failed

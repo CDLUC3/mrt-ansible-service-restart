@@ -4,6 +4,7 @@
   ansible.builtin.stat:
     path: "{{ cdlsysctl }}"
   register: script_status
+  ignore_errors: true
 
 - when: script_status.stat.executable is defined and script_status.stat.executable
   block:
@@ -13,35 +14,32 @@
 
     - name: "Run cdlsysctl restart - {{ az }}"
       ansible.builtin.command: "sudo {{ cdlsysctl }} restart {{ service_name }}"
-      register: result
+      register: cdlsysctl_restart
       ignore_errors: true
     
-    - name: "Report restart failure - {{ az }}"
-      debug:
-        msg: "{{ result.stderr_lines }}"
-      when: result.failed
-      failed_when: true
-  
   - name: "Run cdlsysctl status - {{ az }}"
     ansible.builtin.command: "{{ cdlsysctl }} status {{ service_name }}"
     register: result
+    ignore_errors: true
   
   - name: "Report service status - {{ az }}"
     debug:
       msg: "{{ result.stdout_lines }}"
     when: result.stdout_lines is defined
 
-  - when: tomcat_services is ansible.builtin.contains(service_name)
-    block:
-    - name: "Query build tag - {{ az }}"
-      ansible.builtin.uri:
-        url: "{{ build_content_url[service_name] }}"
-        return_content: true
-      register: response
-      #failed_when: response is failed or "'Build tag' not in response.content"
+  ## - when: tomcat_services is ansible.builtin.contains(service_name)
+  ##   block:
+  ##   - name: "Query build tag - {{ az }}"
+  ##     ansible.builtin.uri:
+  ##       url: "{{ build_content_url[service_name] }}"
+  ##       return_content: true
+  ##     register: response
+  ##     ignore_errors: true
+  ##     #failed_when: response is failed or "'Build tag' not in response.content"
 
-    - name: "Report final build tag - {{ az }}"
-      debug:
-        msg: "{{ response.content }}"
-      when: response.content is defined
+  ##   - name: "Report final build tag - {{ az }}"
+  ##     debug:
+  ##       #msg: "{{ response.content }}"
+  ##       msg: "{{ response }}"
+  ##     when: response.content is defined
 

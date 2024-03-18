@@ -13,15 +13,10 @@
     become_method: sudo
     become_user: "{{ puppet_user }}"
     ansible.builtin.command: "{{ puppet_apply_script }} --exec"
-    register: result
+    register: puppet_run
+    ignore_errors: true
 
   - name: "Report puppet apply success - {{ az }}"
     debug:
-      msg: "{{ result.stdout_lines }}"
-    when: not result.failed
-
-  - name: "Report puppet apply failure - {{ az }}"
-    debug:
-      msg: "{{ result.stderr_lines }}"
-    when: result.failed
-    failed_when: true
+      msg: "{{ puppet_run.stdout_lines }}"
+    when: not puppet_run.failed

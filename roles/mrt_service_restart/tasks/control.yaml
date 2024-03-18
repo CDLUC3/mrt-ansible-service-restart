@@ -21,3 +21,25 @@
   - name: "Handle ALB target re-registration - {{ az }}"
     include_tasks: roles/mrt_service_restart/tasks/reregister_elb_target.yaml
     when: exec|bool and not do_not_deregister
+
+  #
+  # Prevent processing of subsequent AZ if any of the following failed
+  #
+  - name: "Check if puppet run failed - {{ az }}"
+    debug:
+      msg: "Puppet run failed: {{ puppet_run.stderr }}"
+    when: puppet_run.failed is defined and puppet_run.failed
+    failed_when: puppet_run.failed
+
+  - name: "Check if cap deploy failed - {{ az }}"
+    debug:
+      msg: "{{ cap_deploy.stderr_lines }}"
+    when: cap_deploy.failed is defined and cap_deploy.failed
+    failed_when: true
+
+  - name: "Check if service restart failed - {{ az }}"
+    debug:
+      msg: "{{ cdlsysctl_restart.stderr_lines }}"
+    when: cdlsysctl_restart.failed is defined and cdlsysctl_restart.failed
+    failed_when: true
+
