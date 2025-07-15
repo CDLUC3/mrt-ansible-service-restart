@@ -40,7 +40,7 @@ can be restarted.
 ### Command syntax and option summary
 
 ```
-ansible_playbook mrt_service_restart.yaml _l <host_list> _e service_name=<string>
+ansible_playbook mrt_service_restart.yaml -l <host_list> -e service_name=<string>
 ```
 
 #### Arguments
